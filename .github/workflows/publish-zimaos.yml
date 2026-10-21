@@ -43,6 +43,12 @@ jobs:
           test -s dist/index.json
           test -s dist/store/main.zip
           touch dist/.nojekyll
+      - name: Include official AppHub website and SEO metadata
+        run: |
+          set -euo pipefail
+          cp web/index.html web/robots.txt web/sitemap.xml dist/
+          test -s dist/index.html
+          test -s dist/sitemap.xml
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
