@@ -15,9 +15,9 @@ class CatalogGateTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         (self.root / "store-config.json").write_text(
-            json.dumps({"version": 2, "store_id": "com.rivanox.apphub"}), encoding="utf-8")
+            json.dumps({"version": 2, "store_id": "com.rivanox.apphub", "name": {"en_US": "RIVANOX AppHub"}, "description": {"en_US": "Curated self-hosted applications for ZimaOS and CasaOS."}}), encoding="utf-8")
         (self.root / "supported-languages.json").write_text(
-            '["de_DE", "en_US"]', encoding="utf-8")
+            '["en_US"]', encoding="utf-8")
         (self.root / "umbrel-app-store.yml").write_text(
             'id: "rivanoxapphub"\nname: "RIVANOX AppHub"\n', encoding="utf-8")
 
