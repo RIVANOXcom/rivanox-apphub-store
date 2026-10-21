@@ -42,7 +42,11 @@ def validate(root: Path) -> int:
 
     casa_paths = list(root.glob("Apps/*/docker-compose.yml"))
     umbrel_paths = list(root.glob("rivanoxapphub-*/docker-compose.yml"))
-    if any(p.is_dir() and not (p / "docker-compose.yml").is_file() for p in (root / "Apps").iterdir() if (root / "Apps").exists() and p.is_dir()):
+    apps_directory = root / "Apps"
+    if apps_directory.is_dir() and any(
+        p.is_dir() and not (p / "docker-compose.yml").is_file()
+        for p in apps_directory.iterdir()
+    ):
         fail("app directory missing docker-compose.yml")
     for path in umbrel_paths:
         if not (path.parent / "umbrel-app.yml").is_file():
