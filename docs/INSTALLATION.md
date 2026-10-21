@@ -1,4 +1,4 @@
-# Install RIVANOX AppHub on ZimaOS or CasaOS
+# Install RIVANOX AppHub on ZimaOS, CasaOS or umbrelOS
 
 RIVANOX AppHub is a community application catalog for self-hosted RIVANOX software on home servers and NAS systems. It delivers approved application manifests and container images from GitHub-hosted infrastructure.
 
@@ -8,50 +8,54 @@ RIVANOX AppHub is a community application catalog for self-hosted RIVANOX softwa
 | --- | --- | --- |
 | ZimaOS | App Store v2 | `https://rivanoxcom.github.io/rivanox-apphub-store/store.json` |
 | CasaOS | App Store v1 archive | `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` |
+| umbrelOS | GitHub Community App Store repository | `https://github.com/RIVANOXcom/rivanox-apphub-store` |
 
-**Verify that each URL returns a real published file before registering the source.** Source definitions in the repository are not equivalent to a live store catalog.
+**For ZimaOS and CasaOS, verify that the corresponding generated URL returns a published file before registering the source.** A GitHub repository containing source definitions is not automatically a live v2 or v1 catalog.
 
 ## ZimaOS — add the community store
 
-1. Sign in to your ZimaOS dashboard.
-2. Open **App Store** and select **Community Store** (or **App Store Sources**, depending on the installed ZimaOS version).
-3. Select the **Add** icon.
-4. Paste the full ZimaOS `store.json` URL above.
-5. Confirm and refresh the App Store view.
-6. Confirm the **RIVANOX AppHub** store appears. Review an individual application's requirements before selecting **Install**.
+1. Sign in to the ZimaOS dashboard and open **App Store**.
+2. Open **Community Store** or **App Store Sources**, depending on your ZimaOS version.
+3. Choose **Add Source** and paste the ZimaOS `store.json` HTTPS URL.
+4. Confirm and refresh the App Store view.
+5. Review the store entry and any approved apps displayed by your OS version.
 
 ## CasaOS — add the app store source
 
-1. Sign in to your CasaOS dashboard.
-2. Open **App Store**.
-3. Select **+ Add Source**.
-4. Paste the complete CasaOS `store/main.zip` URL above.
-5. Confirm and refresh the App Store view.
-6. Confirm the **RIVANOX AppHub** store is registered and displayable. Install only applications with an approved public release.
+1. Sign in to CasaOS and open **App Store**.
+2. Choose **+ Add Source**.
+3. Paste the CasaOS `store/main.zip` HTTPS URL.
+4. Confirm and refresh the store.
+5. Review the source and any approved apps listed by your OS version.
+
+## umbrelOS — add the community app store
+
+1. Open the umbrelOS **App Store**.
+2. Open the menu in the top-right corner (**•••**), then choose **Community App Stores**.
+3. Paste `https://github.com/RIVANOXcom/rivanox-apphub-store` into the community source field.
+4. Select **Add** and, if accepted, open the RIVANOX AppHub catalog.
+
+umbrelOS reads the GitHub repository directly. It expects `umbrel-app-store.yml` at the root and a compatible prefixed folder for every installable app. An otherwise valid empty source might be rejected by a particular client version; source acceptance without an app does not prove installation success.
 
 ## Installation principles
 
-- App store subscriptions are separate from paid product entitlements.
+- A public app store source does not grant paid product entitlements.
 - Public downloads use GitHub and GHCR, never the RIVANOX development Gitea as an end-user registry.
-- A release is listed only after independent QA, installation, security, license and persistence checks.
-- Original media and existing user data must not be modified by a store subscription.
-- Updating the catalog does not automatically mean an installed application is upgraded.
-- Do not expose local HTTP services to the public internet without the application's documented and supported security configuration.
+- Each app requires security, licensing, architecture, installation and recovery approval.
+- Data retention, backups, restart behavior and update guarantees are defined per application.
+- Updating the catalog does not automatically update installed application containers.
+- Local HTTP apps must not be exposed directly to the internet unless that configuration is officially supported.
 
-## Verify an installation
+## Verify the complete application experience
 
-A successful end-to-end acceptance test confirms that (1) the store source is accepted, (2) the approved app listing appears, (3) its pinned GHCR images are anonymously accessible, (4) the application installs without Git, Node.js, npm or local building, (5) its UI opens on the intended LAN address, and (6) data survives reboot, upgrade and recovery tests.
-
-See [Store compatibility and acceptance testing](QA_STORE_TEST_MATRIX.md) for the full test matrix, safety checks and evidence requirements.
+A full acceptance test proves that the OS accepts the source, displays a real approved application, downloads pinned public GHCR images without login, installs it through the GUI without a local build, starts it successfully and retains data through restart and tested upgrades. See the [QA store test matrix](QA_STORE_TEST_MATRIX.md).
 
 ## Troubleshooting
 
-**Source cannot be added:** Verify the exact HTTPS URL, HTTP response, TLS validity and client-side source format. ZimaOS requires `store.json`; CasaOS requires a ZIP file. Confirm the corresponding generated artifact exists and is publicly accessible.
+**Store source cannot be added:** Confirm that the entry point matches the operating system: `store.json` for ZimaOS, `store/main.zip` for CasaOS, and a GitHub repository URL for umbrelOS. Verify the URL is public and inspect sanitized OS logs.
 
-**Store appears but no applications are listed:** The catalog may not contain a publicly approved app for the selected platform or architecture. Do not treat a successful source registration as proof of app installation support.
+**Source registers but no applications appear:** The catalog may legitimately have no published application for the selected platform or CPU architecture. Record the registration result and wait for a separately approved product listing.
 
-**Docker image pull fails:** Verify the GHCR image is public and the pinned digest supports the device architecture. Never embed personal access tokens inside a public Compose manifest.
+**Image download is unauthorized:** Verify that the exact GHCR image digest is publicly downloadable without credentials. Never publish tokens in Compose files.
 
-**App does not start:** Check platform logs and the application's published requirements, host port availability, volumes, owner initialization and documented memory minimums before retrying.
-
-**Need support?** Open an issue in the [RIVANOX AppHub repository](https://github.com/RIVANOXcom/rivanox-apphub-store/issues), excluding passwords, tokens, private media, device identifiers and other sensitive diagnostics.
+**Need help?** Create a sanitized report in [RIVANOX AppHub Issues](https://github.com/RIVANOXcom/rivanox-apphub-store/issues). Do not share passwords, setup tokens, private files or personal identifiers.
