@@ -34,11 +34,14 @@ jobs:
           base-url: https://rivanoxcom.github.io/rivanox-apphub-store
           cache-file: .cache/build_appstore/image-size-cache.json
           digest-cache-file: .cache/build_appstore/image-digest-cache.json
-      - name: Require generated v2 index
+      - name: Generate CasaOS legacy v1 store ZIP
+        run: python3 scripts/build_casaos_v1.py
+      - name: Require both v2 and legacy v1 indexes
         run: |
           set -euo pipefail
           test -s dist/store.json
           test -s dist/index.json
+          test -s dist/store/main.zip
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
