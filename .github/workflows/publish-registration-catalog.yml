@@ -1,0 +1,79 @@
+name: Publish AppHub Source Registration Catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Publish an empty, non-installable catalog to test adding the AppHub source?"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: apphub-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ inputs.confirm == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate an empty source catalog, never product releases
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 scripts/validate.py
+          test -d Apps
+          if find Apps -mindepth 2 -maxdepth 2 -name docker-compose.yml | grep -q .; then
+            echo "Registration-only deployment cannot publish real applications"
+            exit 1
+          fi
+      - name: Build ZimaOS v2 store using the official engine
+        uses: IceWhaleTech/build-appstore-action@v1
+        with:
+          source: .
+          output: dist
+          base-url: https://rivanoxcom.github.io/rivanox-apphub-store
+          cache-file: .cache/build_appstore/image-size-cache.json
+          digest-cache-file: .cache/build_appstore/image-digest-cache.json
+      - name: Build CasaOS store source ZIP without application listings
+        run: python3 scripts/build_casaos_v1.py --allow-empty
+      - name: Assemble English SEO website and inspect outputs
+        run: |
+          set -euo pipefail
+          test -s dist/store.json
+          test -s dist/index.json
+          test -s dist/store/main.zip
+          cp web/index.html web/robots.txt web/sitemap.xml dist/
+          touch dist/.nojekyll
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from zipfile import ZipFile
+          root = Path("dist")
+          data = json.loads((root / "store.json").read_text())
+          assert data.get("version") == 2
+          assert data.get("store_id") == "com.rivanox.apphub"
+          with ZipFile(root / "store/main.zip") as zf:
+              assert not any(n.endswith("/docker-compose.yml") for n in zf.namelist())
+          print("Store source registration artifacts generated, zero apps listed")
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
