@@ -2,12 +2,10 @@
   "version": 2,
   "store_id": "com.rivanox.apphub",
   "name": {
-    "de_DE": "RIVANOX AppHub",
-    "en_US": "RIVANOX AppHub"
+    "en_US": "RIVANOX AppHub — Self-Hosted App Store"
   },
   "description": {
-    "de_DE": "Freigegebene RIVANOX Apps für selbst gehostete Systeme",
-    "en_US": "Approved RIVANOX self-hosted applications"
+    "en_US": "Discover and install curated RIVANOX self-hosted apps for ZimaOS, CasaOS and home servers. Browse approved Docker applications with versioned releases, security-focused installation and GitHub-hosted downloads."
   },
   "maintainer": "RIVANOX",
   "url": "https://github.com/RIVANOXcom/rivanox-apphub-store"
