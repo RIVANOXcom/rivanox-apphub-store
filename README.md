@@ -8,7 +8,8 @@ RIVANOX AppHub is the public distribution catalog for RIVANOX software. The deve
 
 | Platform | Store integration | Source |
 | --- | --- | --- |
-| **ZimaOS** | Community Store, v2 catalog | `https://rivanoxcom.github.io/rivanox-apphub-store/store.json` |
+| **ZimaOS (ZIP-based clients)** | Community Store, legacy v1 ZIP | `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` |
+| **ZimaOS (v2 clients)** | Community Store, static JSON | `https://rivanoxcom.github.io/rivanox-apphub-store/store.json` |
 | **CasaOS** | App Store → Add Source, v1 ZIP | `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` |
 | **umbrelOS** | Community App Store repository | `https://github.com/RIVANOXcom/rivanox-apphub-store` |
 
@@ -30,8 +31,8 @@ These are the canonical deployment destinations. **Only use a platform source UR
 ### ZimaOS
 1. Open **App Store**.
 2. Open **Community Store** or **App Store Sources**, then choose **Add Source**.
-3. Enter the ZimaOS catalog URL shown above.
-4. Confirm, refresh the store, and review the available approved app entries.
+3. For a ZimaOS version that expects ZIP archives, use the legacy `store/main.zip` URL. For a v2-compatible version, use `store.json`.
+4. Confirm, refresh the store, and review the available approved app entries. A `zip: not a valid zip file` error when adding `store.json` indicates a ZIP-based client: use `store/main.zip`.
 
 ### CasaOS
 1. Open **App Store**.
