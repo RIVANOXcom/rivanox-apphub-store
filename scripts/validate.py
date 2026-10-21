@@ -35,8 +35,12 @@ def validate(root: Path) -> int:
 
     if config.get("version") != 2 or config.get("store_id") != "com.rivanox.apphub":
         fail("unexpected store schema or identity")
-    if not isinstance(languages, list) or not {"de_DE", "en_US"}.issubset(set(languages)):
-        fail("missing supported languages")
+    if not isinstance(config.get("name"), dict) or not isinstance(config["name"].get("en_US"), str):
+        fail("store name must include final English product copy")
+    if not isinstance(config.get("description"), dict) or not isinstance(config["description"].get("en_US"), str):
+        fail("store description must include final English product copy")
+    if not isinstance(languages, list) or "en_US" not in languages:
+        fail("missing English store language")
     if not re.search(r'^id:\s*["\']?rivanoxapphub["\']?\s*$', umbrel, re.M):
         fail("unexpected umbrel community store ID")
 
