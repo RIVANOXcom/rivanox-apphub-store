@@ -5,22 +5,23 @@ The ZIP must NOT be published without upstream Workbench approval, GHCR image
 digest checks, install/recovery tests and the protected AppHub release gate.
 """
 from pathlib import Path
+import argparse
 import sys
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 from validate import InvalidCatalog, validate
 
 
-def build(root: Path) -> Path:
+def build(root: Path, allow_empty: bool = False) -> Path:
     root = root.resolve()
     try:
         count = validate(root)
     except (InvalidCatalog, ValueError, OSError) as exc:
         raise ValueError(f"invalid catalog: {exc}") from exc
-    if count == 0:
+    if count == 0 and not allow_empty:
         raise ValueError("refuse to publish an empty app store")
     apps = root / "Apps"
-    if not apps.is_dir() or not any(apps.glob("*/docker-compose.yml")):
+    if not apps.is_dir() or (not allow_empty and not any(apps.glob("*/docker-compose.yml"))):
         raise ValueError("no CasaOS apps to include")
     target = root / "dist" / "store" / "main.zip"
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -42,8 +43,12 @@ def build(root: Path) -> Path:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--allow-empty", action="store_true",
+                        help="Build a source-registration-only catalog with no apps")
+    args = parser.parse_args()
     try:
-        build(Path(__file__).resolve().parents[1])
+        build(Path(__file__).resolve().parents[1], allow_empty=args.allow_empty)
     except ValueError as exc:
         print(f"CASAOS_V1_BUILD_FAILED: {exc}", file=sys.stderr)
         sys.exit(1)
