@@ -2,6 +2,12 @@ name: Verify Live ZimaOS and CasaOS Store Endpoints
 
 on:
   workflow_dispatch:
+    inputs:
+      allow_empty:
+        description: "Check source registration and transport only (no approved apps required)"
+        type: boolean
+        required: true
+        default: true
 
 permissions:
   contents: read
@@ -16,4 +22,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check public ZimaOS and CasaOS store files
-        run: python3 scripts/verify_public_store.py
+        env:
+          ALLOW_EMPTY: ${{ inputs.allow_empty }}
+        run: |
+          if [ "$ALLOW_EMPTY" = "true" ]; then
+            python3 scripts/verify_public_store.py --allow-empty
+          else
+            python3 scripts/verify_public_store.py
+          fi
