@@ -1,4 +1,4 @@
-# RIVANOX AppHub — ZimaOS and CasaOS Store Acceptance Matrix
+# RIVANOX AppHub — ZimaOS, CasaOS and umbrelOS Store Acceptance Matrix
 
 This is the permanent acceptance standard for store-format interoperability and installation reliability. A source-level build or an HTTP 200 response is not equivalent to a successfully installed app.
 
@@ -40,6 +40,18 @@ Test ZimaOS and CasaOS separately on real amd64 hardware or a qualified VM. Repe
 | CASA-005 | Restart or reboot host | Persistent app data remains intact |
 | CASA-006 | Update by supported user action | No unapproved schema or persistent data loss |
 | CASA-007 | Uninstall | No deletion of user-owned media or unrelated folders |
+
+## Gate 4: umbrelOS
+
+| ID | Action | Expected result |
+| --- | --- | --- |
+| UMBREL-001 | Add the GitHub repository URL in Community App Stores | The source is accepted, or its empty-catalog limitation is recorded |
+| UMBREL-002 | Refresh and reopen App Store | The subscribed source persists |
+| UMBREL-003 | Inspect an approved app entry | Prefixed app ID, metadata and architecture match the release |
+| UMBREL-004 | Install the app through the umbrelOS GUI | Pinned public GHCR images are downloaded without manual building |
+| UMBREL-005 | Restart or reboot host | User data remains intact |
+| UMBREL-006 | Apply a supported update | Persistent data and migration policy are respected |
+| UMBREL-007 | Uninstall | No deletion of unrelated user data |
 
 ## Security and commercial verification
 
