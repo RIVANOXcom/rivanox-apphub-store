@@ -6,7 +6,8 @@ RIVANOX AppHub is a community application catalog for self-hosted RIVANOX softwa
 
 | Operating system | Catalog format | Source URL |
 | --- | --- | --- |
-| ZimaOS | App Store v2 | `https://rivanoxcom.github.io/rivanox-apphub-store/store.json` |
+| ZimaOS (ZIP-based clients) | App Store legacy v1 ZIP | `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` |
+| ZimaOS (v2-compatible clients) | App Store v2 static JSON | `https://rivanoxcom.github.io/rivanox-apphub-store/store.json` |
 | CasaOS | App Store v1 archive | `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` |
 | umbrelOS | GitHub Community App Store repository | `https://github.com/RIVANOXcom/rivanox-apphub-store` |
 
@@ -16,7 +17,7 @@ RIVANOX AppHub is a community application catalog for self-hosted RIVANOX softwa
 
 1. Sign in to the ZimaOS dashboard and open **App Store**.
 2. Open **Community Store** or **App Store Sources**, depending on your ZimaOS version.
-3. Choose **Add Source** and paste the ZimaOS `store.json` HTTPS URL.
+3. Choose **Add Source**. For ZIP-based ZimaOS clients, paste the `store/main.zip` HTTPS URL; for v2-compatible clients, use `store.json`.
 4. Confirm and refresh the App Store view.
 5. Review the store entry and any approved apps displayed by your OS version.
 
@@ -52,7 +53,7 @@ A full acceptance test proves that the OS accepts the source, displays a real ap
 
 ## Troubleshooting
 
-**Store source cannot be added:** Confirm that the entry point matches the operating system: `store.json` for ZimaOS, `store/main.zip` for CasaOS, and a GitHub repository URL for umbrelOS. Verify the URL is public and inspect sanitized OS logs.
+**Store source cannot be added:** Match the source to the client protocol, not just the OS name. ZimaOS versions that report `zip: not a valid zip file` while reading `store.json` expect a ZIP; retry with `store/main.zip`. Use `store.json` only with v2-compatible ZimaOS. CasaOS uses `store/main.zip`, and umbrelOS uses the GitHub repository URL. Verify the public URL and inspect sanitized client logs.
 
 **Source registers but no applications appear:** The catalog may legitimately have no published application for the selected platform or CPU architecture. Record the registration result and wait for a separately approved product listing.
 
