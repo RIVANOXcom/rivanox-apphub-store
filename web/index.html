@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RIVANOX AppHub | Self-Hosted App Store for ZimaOS &amp; CasaOS</title>
+  <meta name="description" content="Explore the RIVANOX AppHub: a curated self-hosted app store for ZimaOS, CasaOS and home servers, with GitHub-hosted Docker images, documented installation and release verification.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://rivanoxcom.github.io/rivanox-apphub-store/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RIVANOX AppHub — Self-Hosted Apps for ZimaOS and CasaOS">
+  <meta property="og:description" content="Discover RIVANOX self-hosted apps for home servers and NAS devices. Add one community app store and install approved Docker applications with GitHub-hosted downloads.">
+  <meta property="og:url" content="https://rivanoxcom.github.io/rivanox-apphub-store/">
+  <meta name="theme-color" content="#091624">
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite","name":"RIVANOX AppHub","url":"https://rivanoxcom.github.io/rivanox-apphub-store/","description":"Community app store for self-hosted Docker applications on ZimaOS, CasaOS and home servers.","inLanguage":"en-US","publisher":{"@type":"Organization","name":"RIVANOX","url":"https://github.com/RIVANOXcom"}}
+  </script>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#091624;color:#eef4ff}
+    *{box-sizing:border-box}body{margin:0;line-height:1.6}
+    a{color:#9fceff;text-decoration:none}a:hover{text-decoration:underline}
+    .wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+    header{border-bottom:1px solid #26394d;background:#0c1d2e}
+    header .wrap{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-size:1.1rem;font-weight:800;letter-spacing:.02em;color:#fff}
+    nav{display:flex;gap:24px;flex-wrap:wrap;font-size:.93rem}
+    main{padding:74px 0 86px}h1{max-width:870px;font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.12;letter-spacing:-.045em;margin:18px 0 24px}
+    h2{font-size:1.6rem;letter-spacing:-.02em;margin:0 0 14px}
+    h3{margin:0 0 10px;font-size:1.15rem}
+    p{margin:0 0 22px}.lead{max-width:750px;color:#b7c9df;font-size:1.17rem}
+    .eyebrow{color:#80c1ff;letter-spacing:.15em;text-transform:uppercase;font-size:.78rem;font-weight:700}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;background:#66aff5;color:#061627;font-weight:700;margin:8px 10px 8px 0}
+    .btn.secondary{background:transparent;color:#c9e6ff;border:1px solid #54718c}
+    section{padding:44px 0;border-top:1px solid #26394d}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    article{padding:24px;border:1px solid #2a435c;background:#11253a;border-radius:16px}
+    article p{color:#b7c9df;font-size:.96rem}
+    code{overflow-wrap:anywhere;color:#c2e7ff}
+    .steps{padding-left:22px}.steps li{margin:10px 0;color:#c0cee0}
+    .muted{color:#abc0d8}
+    footer{border-top:1px solid #26394d;padding:32px 0;color:#a9bfd9;font-size:.9rem}
+    @media(max-width:580px){nav{gap:10px}header .wrap{align-items:flex-start;flex-direction:column;padding-top:16px;padding-bottom:16px}main{padding-top:52px}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><a class="brand" href="./" aria-label="RIVANOX AppHub home">RIVANOX / APPHUB</a>
+    <nav aria-label="Main navigation"><a href="#platforms">Supported platforms</a><a href="#why">Why AppHub</a><a href="https://github.com/RIVANOXcom/rivanox-apphub-store">GitHub</a></nav>
+  </div></header>
+  <main class="wrap">
+    <div class="eyebrow">Self-hosted software · Home servers · NAS</div>
+    <h1>Your home server.<br>Your applications.<br>Your control.</h1>
+    <p class="lead">Discover RIVANOX self-hosted software through one community app store for ZimaOS and CasaOS. Install approved Docker applications on your own hardware, with public packages delivered through GitHub.</p>
+    <a class="btn" href="#platforms">Add AppHub to your server</a><a class="btn secondary" href="https://github.com/RIVANOXcom/rivanox-apphub-store">Explore the source repository</a>
+    <section id="platforms">
+      <h2>Connect RIVANOX AppHub to your operating system</h2>
+      <p class="muted">Each home-server platform uses its own community store format. Choose the source designed for your device.</p>
+      <div class="grid">
+        <article><h3>ZimaOS Community Store</h3><p>Open App Store, select Community Store or App Store Sources, add the catalog URL, and refresh the store.</p><p><code>store.json</code> · v2 catalog</p><a href="./store.json">ZimaOS catalog URL →</a></article>
+        <article><h3>CasaOS App Store</h3><p>Open App Store, choose <strong>+ Add Source</strong>, enter the archive URL and refresh the catalog.</p><p><code>store/main.zip</code> · v1 store archive</p><a href="./store/main.zip">CasaOS store archive →</a></article>
+        <article><h3>umbrelOS Community Apps</h3><p>Add the RIVANOX AppHub repository as a community source on supported umbrelOS versions and review available packages.</p><p>GitHub-based community catalog</p><a href="https://github.com/RIVANOXcom/rivanox-apphub-store">umbrelOS source repository →</a></article>
+      </div>
+    </section>
+    <section id="why">
+      <h2>Self-hosted by design. Distributed through GitHub.</h2>
+      <div class="grid">
+        <article><h3>Keep your data close</h3><p>Run supported applications on hardware you control. Each app documents its persistence, network access, installation and recovery requirements.</p></article>
+        <article><h3>Traceable software releases</h3><p>Release metadata, supported platforms, verified application images and update requirements are checked before catalog publication.</p></article>
+        <article><h3>A streamlined install experience</h3><p>Add one store source to discover approved RIVANOX apps. End users do not need to compile application source code.</p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Documentation and support</h2>
+      <p class="muted">Read the platform installation guide and review application requirements before installation. Source registration does not guarantee that an application has been published for every CPU architecture.</p>
+      <a class="btn secondary" href="https://github.com/RIVANOXcom/rivanox-apphub-store/blob/main/docs/INSTALLATION.md">Installation guide</a>
+      <a class="btn secondary" href="https://github.com/RIVANOXcom/rivanox-apphub-store/issues">Support and issues</a>
+    </section>
+  </main>
+  <footer><div class="wrap">© RIVANOX · RIVANOX AppHub is an independent community app store. Individual applications have their own licenses and service terms.</div></footer>
+</body>
+</html>
