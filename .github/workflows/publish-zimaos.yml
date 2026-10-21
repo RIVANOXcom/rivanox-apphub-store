@@ -1,0 +1,48 @@
+name: Publish Approved ZimaOS Catalog
+on:
+  push:
+    tags:
+      - "apphub-v*"
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: apphub-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    # Must be deliberately enabled after licensing, image and install verification
+    # and after GitHub Pages is configured to deploy using GitHub Actions.
+    if: ${{ vars.APPHUB_PUBLISH_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate source and require real approved app
+        run: |
+          set -euo pipefail
+          python3 scripts/validate.py
+          find Apps -mindepth 2 -maxdepth 2 -name docker-compose.yml | grep -q .
+      - name: Build official ZimaOS v2 static catalog
+        uses: IceWhaleTech/build-appstore-action@v1
+        with:
+          source: .
+          output: dist
+          base-url: https://rivanoxcom.github.io/rivanox-apphub-store
+          cache-file: .cache/build_appstore/image-size-cache.json
+          digest-cache-file: .cache/build_appstore/image-digest-cache.json
+      - name: Require generated v2 index
+        run: |
+          set -euo pipefail
+          test -s dist/store.json
+          test -s dist/index.json
+          touch dist/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
