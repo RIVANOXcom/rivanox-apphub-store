@@ -15,7 +15,7 @@ The direct repository source does not require GitHub Pages.
 
 The root `umbrel-app-store.yml` is the definitive identity metadata. Each released umbrelOS app will additionally need a validated `rivanoxapphub-<app>/umbrel-app.yml` plus `docker-compose.yml`. Some umbrelOS versions may not show an empty community store; record this result accurately rather than claiming the source is broken or inventing an app.
 
-## Test B: ZimaOS — v2 catalog source
+## Test B: ZimaOS — test the correct client protocol (ZIP v1 or JSON v2)
 
 1. In [GitHub Pages settings](https://github.com/RIVANOXcom/rivanox-apphub-store/settings/pages), configure **Build and deployment → GitHub Actions**.
 2. Open [Publish AppHub Source Registration Catalog](https://github.com/RIVANOXcom/rivanox-apphub-store/actions/workflows/publish-registration-catalog.yml). Run the workflow on `main` and explicitly confirm the publication of an **empty, non-installable catalog**.
@@ -24,8 +24,10 @@ The root `umbrel-app-store.yml` is the definitive identity metadata. Each releas
    - `https://rivanoxcom.github.io/rivanox-apphub-store/`
    - `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`
    - `https://rivanoxcom.github.io/rivanox-apphub-store/index.json`
-5. Open ZimaOS **App Store → Community Store / App Store Sources → Add Source** and paste `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`.
-6. Record source registration, refresh and persistence results.
+5. Open ZimaOS **App Store → Community Store / App Store Sources → Add Source**.
+6. For ZimaOS clients that expect ZIP input, paste `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip`; for v2-compatible clients, paste `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`.
+7. If `store.json` returns `zip: not a valid zip file`, the client is parsing the JSON as ZIP: correct the input URL rather than rebuilding the JSON. Record the operating system version.
+8. Record source registration, refresh and persistence results.
 
 The IceWhale builder or a ZimaOS version may reject catalogs without apps. That is an interoperability finding, not permission to invent an unapproved release.
 
