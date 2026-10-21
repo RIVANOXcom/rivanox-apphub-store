@@ -1,6 +1,16 @@
 name: Publish AppHub Source Registration Catalog
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "store-config.json"
+      - "supported-languages.json"
+      - "umbrel-app-store.yml"
+      - "web/**"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/publish-registration-catalog.yml"
   workflow_dispatch:
     inputs:
       confirm:
@@ -20,7 +30,7 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ inputs.confirm == true }}
+    if: ${{ github.event_name == 'push' || inputs.confirm == true }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
@@ -31,7 +41,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate an empty source catalog, never product releases
+      - name: Validate catalog source and block unapproved applications
         run: |
           set -euo pipefail
           python3 -m unittest discover -s tests -v
