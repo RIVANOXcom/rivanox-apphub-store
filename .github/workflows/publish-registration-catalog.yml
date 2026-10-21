@@ -77,8 +77,12 @@ jobs:
           data = json.loads((root / "store.json").read_text())
           assert data.get("version") == 2
           assert data.get("store_id") == "com.rivanox.apphub"
-          with ZipFile(root / "store/main.zip") as zf:
+          zipfile = root / "store/main.zip"
+          assert zipfile.read_bytes().startswith(b"PK"), "ZIP signature missing"
+          with ZipFile(zipfile) as zf:
+              assert zf.testzip() is None, "invalid ZIP entry"
               assert not any(n.endswith("/docker-compose.yml") for n in zf.namelist())
+          print("ZimaOS/CasaOS legacy source: " + str(zipfile))
           print("Store source registration artifacts generated, zero apps listed")
           PY
       - uses: actions/configure-pages@v5
@@ -87,3 +91,13 @@ jobs:
           path: dist
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Publish correct legacy and v2 source instructions
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## RIVANOX AppHub Source URLs
+          - **ZimaOS ZIP-based clients / CasaOS:** https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip
+          - **ZimaOS v2-compatible clients:** https://rivanoxcom.github.io/rivanox-apphub-store/store.json
+          - **AppHub website:** https://rivanoxcom.github.io/rivanox-apphub-store/
+
+          This registration-only release contains no installable applications. An accepted source does not prove end-to-end application installation.
+          EOF
