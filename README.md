@@ -14,7 +14,7 @@ RIVANOX AppHub is the public distribution catalog for RIVANOX software. The deve
 
 These are the canonical deployment destinations. **Only use a platform source URL after its artifact has been published and verified**; a GitHub repository containing source files alone is not an installable store.
 
-[Installation instructions](docs/INSTALLATION.md) · [Release and security policy](docs/RELEASE_CONTRACT.md)
+[Installation instructions](docs/INSTALLATION.md) · [ZimaOS/CasaOS source-registration test](docs/STORE_REGISTRATION_TEST.md) · [Release and security policy](docs/RELEASE_CONTRACT.md)
 
 ## Built for self-hosted software
 
