@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rivanoxcom.github.io/rivanox-apphub-store/sitemap.xml
