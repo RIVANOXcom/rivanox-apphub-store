@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "store_id": "com.rivanox.apphub",
+  "name": {
+    "de_DE": "RIVANOX AppHub",
+    "en_US": "RIVANOX AppHub"
+  },
+  "description": {
+    "de_DE": "Freigegebene RIVANOX Apps für selbst gehostete Systeme",
+    "en_US": "Approved RIVANOX self-hosted applications"
+  },
+  "maintainer": "RIVANOX",
+  "url": "https://github.com/RIVANOXcom/rivanox-apphub-store"
+}
