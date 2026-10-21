@@ -36,6 +36,14 @@ class CasaosLegacyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.root)
 
+    def test_explicit_empty_store_registration_archive(self):
+        apps = self.root / "Apps"
+        apps.mkdir()
+        (apps / ".gitkeep").write_text("App source directory.\n", encoding="utf-8")
+        output = build(self.root, allow_empty=True)
+        with ZipFile(output) as zf:
+            self.assertEqual(zf.namelist(), ["Apps/.gitkeep"])
+
     def test_zip_contains_casaos_app_tree_and_is_deterministic(self):
         self.add_test_app()
         output = build(self.root)
