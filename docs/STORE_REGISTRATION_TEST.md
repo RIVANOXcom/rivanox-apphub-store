@@ -1,77 +1,48 @@
-# Test RIVANOX AppHub in ZimaOS and CasaOS Before the First App Release
+# Verify RIVANOX AppHub Source Registration on ZimaOS, umbrelOS and CasaOS
 
-The first compatibility milestone is to prove that a device can subscribe to a genuine RIVANOX AppHub source delivered from GitHub. This is separate from validating an actual application install.
+This is the permanent acceptance procedure for a community store subscription before and after the first public application release.
 
-This document provides a real, repeatable source-registration test that **does not publish an unapproved application** or invent an image digest.
+Source registration is not the same as a successful app installation. No unlicensed Media Center container is required or published by this procedure.
 
-## 1. Enable GitHub Pages
+## Test A: umbrelOS — GitHub repository source
 
-An authorized repository administrator opens:
+The direct repository source does not require GitHub Pages.
 
-`https://github.com/RIVANOXcom/rivanox-apphub-store/settings/pages`
+1. Open umbrelOS **App Store**, then the three-dot menu → **Community App Stores**.
+2. Add `https://github.com/RIVANOXcom/rivanox-apphub-store`.
+3. Record whether RIVANOX AppHub is accepted and shown.
+4. Check whether the entry survives refreshing or reopening the App Store.
 
-Under **Build and deployment**, select **GitHub Actions** as the publishing source. Save the setting. Public access and the `github-pages` environment must be available.
+The root `umbrel-app-store.yml` is the definitive identity metadata. Each released umbrelOS app will additionally need a validated `rivanoxapphub-<app>/umbrel-app.yml` plus `docker-compose.yml`. Some umbrelOS versions may not show an empty community store; record this result accurately rather than claiming the source is broken or inventing an app.
 
-## 2. Publish the real empty store source
+## Test B: ZimaOS — v2 catalog source
 
-Open:
+1. In [GitHub Pages settings](https://github.com/RIVANOXcom/rivanox-apphub-store/settings/pages), configure **Build and deployment → GitHub Actions**.
+2. Open [Publish AppHub Source Registration Catalog](https://github.com/RIVANOXcom/rivanox-apphub-store/actions/workflows/publish-registration-catalog.yml). Run the workflow on `main` and explicitly confirm the publication of an **empty, non-installable catalog**.
+3. The job must pass source validation, generate `store.json` and `index.json` with the official v2 build action, package an empty CasaOS ZIP, and deploy the final English AppHub website.
+4. In a private browser window verify these HTTPS files return valid, publicly accessible content:
+   - `https://rivanoxcom.github.io/rivanox-apphub-store/`
+   - `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`
+   - `https://rivanoxcom.github.io/rivanox-apphub-store/index.json`
+5. Open ZimaOS **App Store → Community Store / App Store Sources → Add Source** and paste `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`.
+6. Record source registration, refresh and persistence results.
 
-`https://github.com/RIVANOXcom/rivanox-apphub-store/actions/workflows/publish-registration-catalog.yml`
+The IceWhale builder or a ZimaOS version may reject catalogs without apps. That is an interoperability finding, not permission to invent an unapproved release.
 
-Choose **Run workflow** on `main`, explicitly check the confirmation checkbox, then start the workflow. The workflow must:
+## Test C: CasaOS — v1 ZIP source
 
-1. Run the automated catalog safety tests.
-2. Confirm no installable `Apps/*/docker-compose.yml` is present.
-3. Use the official IceWhale v2 build action to generate `store.json` and `index.json`.
-4. Generate a ZIP-based CasaOS store archive containing no installable application.
-5. Publish the final English homepage and the generated catalog to GitHub Pages.
+After the GitHub Pages publication in Test B, download `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip` anonymously and confirm it is a ZIP archive.
 
-If a client or build engine rejects an empty catalog, **record that as an interoperability finding**. Do not insert an unapproved application merely to make the test pass. A later approved diagnostic or Media Center app will allow full acceptance testing.
+In CasaOS choose **App Store → + Add Source**, paste the ZIP URL, confirm and refresh. Record whether the OS accepts a source with zero app entries. CasaOS implementations may require a non-empty app catalog, in which case the full source-registration and installation gate needs a real approved app.
 
-## 3. Verify public files before opening either OS
+## Automated endpoint smoke test
 
-Open each URL in a private browser window, without signing in to GitHub:
+Open [Verify Live ZimaOS and CasaOS Store Endpoints](https://github.com/RIVANOXcom/rivanox-apphub-store/actions/workflows/verify-public-store.yml), select **Run workflow** with `allow_empty = true`. The workflow checks HTTPS transport, v2 protocol fields, v1 ZIP integrity and the English homepage.
 
-- `https://rivanoxcom.github.io/rivanox-apphub-store/`
-- `https://rivanoxcom.github.io/rivanox-apphub-store/store.json`
-- `https://rivanoxcom.github.io/rivanox-apphub-store/index.json`
-- `https://rivanoxcom.github.io/rivanox-apphub-store/store/main.zip`
+Select `allow_empty = false` after at least one approved app is published. This is a transport/catalog check only; device installation and recovery are independent tests.
 
-The homepage must display the final English AppHub marketing copy. The JSON endpoints must return valid JSON, and the ZIP link must download a valid ZIP file. HTTP 404, HTML error pages or GitHub login prompts are failures.
+## Full application acceptance
 
-The read-only smoke test can also run from GitHub Actions:
+After a product passes the R029 Workbench release gate, repeat registration and confirm an approved app listing, anonymous GHCR image digest pull, one-click installation, secure owner initialization, restart/persistence, backup/restore, and upgrade compatibility. Qualify each CPU architecture separately.
 
-`https://github.com/RIVANOXcom/rivanox-apphub-store/actions/workflows/verify-public-store.yml`
-
-Select **Run workflow** with **allow_empty = true**. This verifies public transport and catalog format only.
-
-## 4. Add the store in ZimaOS
-
-1. Open ZimaOS **App Store**.
-2. Select **Community Store** or **App Store Sources**.
-3. Select **Add Source**.
-4. Paste the `store.json` HTTPS URL above.
-5. Confirm and refresh.
-6. Capture whether the AppHub name is shown and retained after reloading.
-
-If source registration is rejected because the catalog is empty, record the OS version and sanitized error. Actual app listing and install tests remain unverified.
-
-## 5. Add the store in CasaOS
-
-1. Open CasaOS **App Store**.
-2. Select **+ Add Source**.
-3. Paste the `store/main.zip` HTTPS URL above.
-4. Confirm and refresh.
-5. Capture whether the AppHub source is registered and retained after reloading.
-
-CasaOS implementations may require at least one installable app in their ZIP. An empty ZIP catalog therefore proves format delivery and may, but does not necessarily, prove source acceptance.
-
-## 6. Close the final installation gate only with a real approved app
-
-Once Media Center or a separately authorized RIVANOX diagnostic application has passed licensing, first-run, image, platform and recovery checks, promote its digest-pinned app entry through the controlled release path. Then test app listing, one-click install, owner setup, read-only media mounts, restart, backup and restore on both systems.
-
-Do not confuse a successful store subscription with a successful product release. Record results in Workbench R029 requirement #2398 and R032 requirement #2399.
-
-## 7. Test evidence to retain
-
-For each OS: exact operating system version, test date, architecture, source URL, publicly served catalog revision, source subscription result, sanitized error/screenshots, and test operator. Do not upload passwords, private media or installation tokens.
+Record date, operating system/version, architecture, source URL, GitHub artifact revision, sanitized screenshots/logs and pass/fail in Workbench R029 #2398. Media Center installation evidence belongs to R032 #2399. No customer Gitea download is permitted.
